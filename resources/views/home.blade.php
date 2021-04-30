@@ -14,15 +14,12 @@
     <h2>Tablon de Posts</h2>
     <h3>
     <ul>
-        <?php
-        use App\Models\Post;
-        $posts = Post::latest()->paginate(5);
-        ?>
-
         @forelse($posts as $post)
             <ul>
                     <u>Título del post: {{ $post->title }} </u><br>
-                    Categoría: {{ $post->category }} <br>
+                    
+                    Categoría:<i> {{ $post->category->title }} </i><br>
+                    
                     Descripción: <i>{{ $post->description }}</i> <br>
                 <br>
                 <br> 
@@ -30,9 +27,7 @@
             </ul>
         @empty
             <li>No hay proyectos para mostrar</li>
-        @endforelse
-        {{ $posts->links() }}
-        
+        @endforelse 
     </ul>
     </h3>       
 

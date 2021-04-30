@@ -38,7 +38,6 @@ class CreateUserRequest extends FormRequest
             'nickname.required' => 'Necesitas ingresar tu nombre de pila',
             'email.required' => 'Necesitas ingresar un email',
             'password.required' => 'Necesitas ingresar una contraseña'
-            
         ];
     }
 }

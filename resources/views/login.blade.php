@@ -1,10 +1,10 @@
 @extends('head')
 
-@section('title', 'Inicio de Sesion')
+@section('title', 'Inicio de Sesión')
 
 @section('content')
 
-    <h1 align="Center">Formulario de Inicio de Sesion</h1>
+    <h1 align="Center">Formulario de Inicio de Sesión</h1>
 
     @if($errors->any())
 
@@ -33,7 +33,7 @@
             <br><br>
         </label>
 
-        <button> Iniciar Sesion </button>
+        <button> Iniciar Sesión </button>
 
     </form>
 

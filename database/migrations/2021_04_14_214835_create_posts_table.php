@@ -16,12 +16,14 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('category');
+            $table->unsignedBigInteger('category_id');
             $table->text('description');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
             //Crear clave foránea 1 a muchos
             $table->foreign('user_id')->references('id')->on('users');
+            //Crear clave foránea 1 a 1
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 

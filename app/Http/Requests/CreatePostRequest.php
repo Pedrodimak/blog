@@ -26,7 +26,7 @@ class CreatePostRequest extends FormRequest
         return [
             'title' => 'required',
             'description' => 'required',
-            'category' => 'required',
+            'category_id' => 'required|exists:categories,id',
             'user_id' => 'required'
         ];
     }
@@ -36,7 +36,7 @@ class CreatePostRequest extends FormRequest
         return [
             'title.required' => 'El proyecto necesita un título',
             'description.required' => 'La descripción está vacía',
-            'category.required' => 'Necesitas introducir la categoría a la que pertenece tu post'
+            'category_id.required' => 'Necesitas introducir la categoría a la que pertenece tu post'
         ];
     }
 }

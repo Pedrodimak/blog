@@ -1,10 +1,12 @@
 <?php
 
-
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HomeLoggedController;
 use App\Http\Controllers\RegisterController;
-use Illuminate\Auth\Events\Login;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,39 +20,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Ruta página principal -----------------------------------------------*/
-    Route::view('/', 'home')->name('home');
-    
+/*Grupo de rutas middleware logged (cuando inicias sesión tienes acceso a estas rutas)---------- */
+    Route::middleware('no_logged')->group( function() {
+    /*Ruta página principal -----------------------------------------------*/
+        Route::get('/', [HomeController::class, 'index'])->name('home');
+        
 
-/*Ruta página de registro --------------------------------------------- */
-    Route::view('/register', 'register')->name('register');
-    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+    /*Ruta página de registro --------------------------------------------- */
+        Route::get('/register', [RegisterController::class, 'index'])->name('register');
+        Route::post('/register/store', [RegisterController::class, 'store'])->name('register.store');
 
-/*Ruta página de acceso ------------------------------------------------ */
-    Route::view('/login', 'login')->name('login');
-    Route::post('/login/authenticate', [LoginController::class, 'authenticate'])->name('login.authenticate');
+    /*Ruta página de acceso ------------------------------------------------ */
+        Route::get('/login', [LoginController::class, 'show'])->name('login');
+        Route::post('/login/authenticate', [LoginController::class, 'index'])->name('login.authenticate');
+    });
 
-/*Ruta de posts -------------------------------------------------------- */
-    //Route::view('/post', [PostController::class, 'show'])->name('posts.show');
-
-/*Grupo de rutas middleware --------------------------------------------- */
+/*Grupo de rutas middleware logged (cuando inicias sesión tienes acceso a estas rutas)---------- */
     Route::middleware('logged')->group( function() {
         
-        Route::view('/logged/home', 'logged.home-logged')->name('logged.home-logged');
-        Route::get('/logged/logout', [LoginController::class, 'logout'])->name('logged.logout');
+        Route::get('/logged/home', [HomeLoggedController::class, 'show'])->name('logged.home-logged');
+        Route::get('/logged/logout', [LogoutController::class, 'index'])->name('logged.logout');
         
-        Route::get('/logged/edit', [LoginController::class, 'edit'])->name('logged.edit-user');
-        Route::patch('/logged/update', [LoginController::class, 'update'])->name('logged.update-user');
+        Route::get('/logged/edit', [UserController::class, 'edit'])->name('logged.edit-user');
+        Route::patch('/logged/update', [UserController::class, 'update'])->name('logged.update-user');
         
         Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
         Route::post('/post/store', [PostController::class, 'store'])->name('post.store');
         Route::get('/post/{post:id}/edit', [PostController::class, 'edit'])->name('post.edit');
         Route::patch('/post/{post:id}/update', [PostController::class, 'update'])->name('post.update');
-        Route::get('/post/{post:id}/delete', [PostController::class, 'destroy'])->name('post.delete');
+        Route::delete('/post/{post:id}/delete', [PostController::class, 'destroy'])->name('post.delete');
+    
     });
 
-    /*Route::middleware('posts')->group(function() {
-        Route::view('/post/edit', [PostController::class, 'edit'])->name('post.edit');
-    });*/
     
     

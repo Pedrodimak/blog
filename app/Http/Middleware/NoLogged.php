@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 
-class Logged
+class NoLogged
 {
     /**
      * Handle an incoming request.
@@ -16,9 +15,11 @@ class Logged
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
-    {   
-        $id = session('key');
-        User::findOrFail($id);
+    {
+        if(session()->has('key'))
+        {
+            return redirect('/logged/home')->with('status', 'Necesitas cerrar la sesión para acceder a esta vista');
+        }
 
         return $next($request);
     }

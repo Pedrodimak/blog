@@ -1,23 +1,18 @@
-<?php
-
-use App\Models\Post;
-
-?>
-
 @extends('logged.head-logged')
 
 @section('title', 'Crear Post')
 
 @section('content')
-    <h4 align="Center"><a href=" {{ route('logged.logout')}}" >CERRAR SESION</a> </h4>
+    <h4 align="Center"> <a href="{{route('logged.logout')}}" > CERRAR SESION </a> </h4>
 
     @include('partials.validation-errors')
 
-    <form method='POST' action="{{ route('post.store') }}">
+    <form method='POST' align="Center" action="{{ route('post.store') }}">
         
         @csrf
+        <h2> Formulario para Crear un Post </h2>
         <label>
-            Título del Post <br>
+            Titulo del Post <br>
             <input type="text" name="title" value="{{ old('title', $post->title) }}">
         </label>
         <br>
@@ -30,7 +25,15 @@ use App\Models\Post;
         <br>
         <label>
             Categoría a la que pertenece <br>
-            <input type="text" name="category" value="{{ old('category',  $post->category) }}">
+                <select name="category_id">
+                    <option value="0">Elige una opción</option>
+                    @forelse( $categories as $category )
+                    <option select value="{{$category->id}}">{{ $category->title }}</option>
+                    @empty
+                        <li>No hay categorias para mostrar</li>
+
+                    @endforelse
+                </select>
         </label>
         <br>
         <label>

@@ -4,16 +4,17 @@
 @section('title', 'Editar Usuario')
 
 @section('content')
-    <h1 align="Center">Editar Usuario</h1>
+    
 
     @include('partials.validation-errors')
 
-    <form method='POST' action="{{ route('logged.update-user') }}">
+    <form method='POST' align="center" action="{{ route('logged.update-user') }}">
         
         @method ('PATCH')
         @csrf
+        <h1>Formulario para Editar un Usuario</h1>
         <label>
-            Nombre del usuario <br>
+            Nombre del Usuario <br>
             <input type="text" name="name" value="{{ old('name', $user->name) }}">
         </label>
         <br>

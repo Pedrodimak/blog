@@ -12,17 +12,23 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
+    public function show()
+    {
+        return view('login');
+    }
 
-
-    public function authenticate()
+    public function index()
     {
         $email = request('email');
         $password = request('password');
         $user = User::where('email', $email)->firstOrFail();
 
         if (Hash::check($password, $user->password)) 
-        { 
+        {   
+            //Guardamos por defecto el id del usuario en la sesion
+            session(['key', $user->id]);
             session(['key' => $user->id]);
+            //Redireccionamos a la vista
             return redirect()->route('logged.home-logged')->with('status', 'Ha ingresado en el blog');
         } 
         else {
@@ -30,38 +36,6 @@ class LoginController extends Controller
                 'email' => 'Las credenciales no son correctas',
             ]);
         }
-    }
-
-    public function logout()
-    {
-        //$id = session('key');
-        //Cache::forget($id);
-        request()->session()->flush();
-        Cache::flush();
-        return redirect()->route('home');
-    }
-
-    public function edit(User $user)
-    {
-        return view('logged.edit-user', ['user' => $user]);
-    }
-
-    public function update()
-    {
-        $id = request()->session()->get('key');
-        $user = User::findOrFail($id);
-        
-        $user->name = request()->name;
-        $user->nickname = request()->nickname;
-        $user->email = request()->email;
-        $user->password = Hash::make(request()->password);
-        
-
-        $user->save();
-
-        Cache::flush();
-
-        return redirect()->route('logged.home-logged');
     }
 
 }
